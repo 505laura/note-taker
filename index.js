@@ -22,6 +22,13 @@ app.post('/api/notes', async(req, res) => {
     await fs.promises.writeFile('db.json', JSON.stringify(newNotes));
 });
 
+app.delete('/api/notes/:id', async(req, res) => {
+    const {id} = req.params;
+    const dbJSON = JSON.parse(await fs.promises.readFile('db.json'));
+    const newNotes = dbJSON.filter((note) => note.id !== id);
+    await fs.promises.writeFile('db.json', JSON.stringify(newNotes));
+});
+
 app.use('/notes', express.static('public/notes.html'));
 app.use('*', express.static('public/index.html'));
 
